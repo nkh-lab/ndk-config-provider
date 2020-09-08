@@ -21,7 +21,7 @@ Java_com_example_myapp_MainActivity_stringFromJNI(JNIEnv* env, jobject obj)
 
 std::string getConfigDirPathFromJava(JNIEnv* env, jobject obj)
 {
-    jclass clazz = env->FindClass("com/example/myapp/MainActivity");
+    jclass clazz = env->GetObjectClass(obj); // or env->FindClass("com/example/myapp/MainActivity");
     jmethodID method = env->GetMethodID(clazz, "getConfigDirPath", "()Ljava/lang/String;");
     jobject ret = env->CallObjectMethod(obj, method);
 
