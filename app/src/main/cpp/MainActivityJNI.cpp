@@ -1,14 +1,17 @@
+#include <android/log.h>
 #include <fstream>
 #include <jni.h>
 #include <string>
 #include <unistd.h>
 
-#include "android/log.h"
-
-#define LOG_TAG "MainActivityJNI"
+namespace {
+const char* TAG = "MainActivityJNI";
 
 std::string getConfigDirPathFromJava(JNIEnv* env, jobject obj);
 void readConfigFile(std::string filePath);
+} // namespace
+
+#define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__))
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_example_myapp_MainActivity_stringFromJNI(JNIEnv* env, jobject obj)
@@ -19,6 +22,7 @@ Java_com_example_myapp_MainActivity_stringFromJNI(JNIEnv* env, jobject obj)
     return env->NewStringUTF(hello.c_str());
 }
 
+namespace {
 std::string getConfigDirPathFromJava(JNIEnv* env, jobject obj)
 {
     jclass clazz = env->GetObjectClass(obj); // or env->FindClass("com/example/myapp/MainActivity");
@@ -35,10 +39,11 @@ void readConfigFile(std::string filePath)
     std::ifstream ifs(filePath);
     std::string line;
 
-    (void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, "%s:", filePath.c_str());
+    LOGD("%s:", filePath.c_str());
 
     while (std::getline(ifs, line))
     {
-        (void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, "%s", line.c_str());
+        LOGD("%s", line.c_str());
     }
 }
+} // namespace
