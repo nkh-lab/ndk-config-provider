@@ -1,24 +1,36 @@
 @startuml
 start
 partition Preparation {
-    :put config file to resources;
+    :Put config file to resources;
     note right
-        app/src/main/res/raw/config.json
+        app/src/main/res/raw/res_raw_config.json
     end note
 }
 partition Java {
-    if (first app run) then (yes)
-        :read resources and store config file in FilesDir;
+    if (First app run) then (yes)
+        :Read resources and store config file in FilesDir;
         note right
-            /data/user/0/com.example.myapp/files/config.json
+            /data/user/0/com.example.myapp/files/res_raw_config.json
         end note
     else (no)
     endif
-    :provide method to get config file path;
+
+    if (Path to stored config) then (via JNI)
+        :Provide method to get path;
+    else (via Environment Variable)
+        :Store path to Environment Variable;
+    endif
 }
+
 partition Native {
-    :call Java method to get config file path;
-    :read config file;
+
+    if (Path to stored config) then (via JNI)
+        :Call Java method to get path;
+    else (via Environment Variable)
+        :Get path from Environment Variable;
+    endif
+
+    :Read config file;
 }
 stop
 @enduml

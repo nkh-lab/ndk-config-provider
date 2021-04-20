@@ -14,7 +14,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
-                cppFlags ""
+                //cppFlags "-DGET_PATH_VIA_ENV_VAR"
             }
         }
     }
@@ -29,6 +29,13 @@ android {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
             version "3.10.2"
+        }
+    }
+    sourceSets {
+        main {
+            assets {
+                srcDirs 'src/main/assets'
+            }
         }
     }
 }
